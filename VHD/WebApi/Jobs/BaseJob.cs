@@ -16,7 +16,7 @@ public abstract class BaseJob
     public async Task Run()
     {
         var sw = Stopwatch.StartNew();
-        var jobType = GetType().DeclaringType;
+        var jobType = GetType().Name;
         _logger.LogInformation("{Job} is running", jobType);
 
         await DoWork();

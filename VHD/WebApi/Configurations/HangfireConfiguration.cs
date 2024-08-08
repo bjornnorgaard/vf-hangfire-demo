@@ -26,6 +26,7 @@ public static class ServiceCollectionExtension
         builder.Services.AddHangfireServer(o =>
         {
             o.ServerName = $"{opts.ServiceName} {Guid.NewGuid()}";
+            o.WorkerCount = Environment.ProcessorCount;
             if (queues.Length > 0) o.Queues = queues;
         });
     }

@@ -8,7 +8,7 @@ public class FailingJob : BaseJob
 
     protected override Task DoWork()
     {
-        if (Random.Shared.Next(0, 5) == 0)
+        if (Random.Shared.Next(0, 2) == 0)
         {
             return Task.CompletedTask;
         }
