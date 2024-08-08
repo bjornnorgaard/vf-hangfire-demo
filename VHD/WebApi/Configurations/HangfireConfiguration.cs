@@ -21,6 +21,7 @@ public static class ServiceCollectionExtension
             .ToLower()
             .Split(',')
             .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Select(s => s.Trim())
             .ToArray() ?? [];
 
         if (queues.Length > 0)
