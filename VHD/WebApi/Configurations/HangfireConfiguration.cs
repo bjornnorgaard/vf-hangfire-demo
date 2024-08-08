@@ -23,19 +23,22 @@ public static class ServiceCollectionExtension
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .ToArray() ?? [];
 
-        builder.Services.AddHangfireServer(o =>
+        if (queues.Length > 0)
         {
-            o.ServerName = $"{opts.ServiceName} {Guid.NewGuid()}";
-            o.WorkerCount = Environment.ProcessorCount;
-            if (queues.Length > 0) o.Queues = queues;
-        });
+            builder.Services.AddHangfireServer(o =>
+            {
+                o.ServerName = $"{opts.ServiceName} {Guid.NewGuid()}";
+                o.WorkerCount = 1;
+                o.Queues = queues;
+            });
+        }
     }
 
     public static void UseHangfire(this WebApplication app)
     {
         app.UseHangfireDashboard(options: new DashboardOptions
         {
-            Authorization = new [] { new AnonymousAuthorizationFilter() }
+            Authorization = new[] { new AnonymousAuthorizationFilter() }
         });
 
         RecurringJob.AddOrUpdate<Scheduler>("scheduler", x => x.Run(), Cron.Minutely);

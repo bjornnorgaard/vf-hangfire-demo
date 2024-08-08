@@ -11,6 +11,8 @@ services:
       ServiceOptions__ServiceName: "Docker One"
       ServiceOptions__HangfireConnection: "Host=postgres; Database=postgres; Username=postgres; Password=postgres"
       ServiceOptions__HangfireQueues: "one,default"
+    depends_on:
+      - postgres
 
   webapi_two:
     image: ursu/webapi-hangfire:latest
@@ -23,6 +25,8 @@ services:
       ServiceOptions__ServiceName: "Docker Two"
       ServiceOptions__HangfireConnection: "Host=postgres; Database=postgres; Username=postgres; Password=postgres"
       ServiceOptions__HangfireQueues: "two,default"
+    depends_on:
+      - postgres
   
   postgres:
     image: postgres:15.7-alpine3.20
