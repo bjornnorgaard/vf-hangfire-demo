@@ -1,3 +1,6 @@
+using Hangfire;
+using WebApi.Configurations;
+
 namespace WebApi.Jobs;
 
 public class SlowJob : BaseJob
@@ -6,6 +9,7 @@ public class SlowJob : BaseJob
     {
     }
 
+    [Queue(JobQueues.Two)]
     protected override Task DoWork()
     {
         Thread.Sleep(Random.Shared.Next(1000, 10_000));

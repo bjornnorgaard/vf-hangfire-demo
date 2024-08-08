@@ -1,4 +1,28 @@
 services:
+  webapi_one:
+    image: ursu/hangfire-demo:latest
+    build:
+      context: VHD
+      dockerfile: Dockerfile
+    ports:
+      - "6061:8080"
+    environment:
+      ServiceOptions__ServiceName: "Docker One"
+      ServiceOptions__HangfireConnection: "Host=postgres; Database=postgres; Username=postgres; Password=postgres"
+      ServiceOptions__HangfireQueues: "one,default"
+  
+  webapi_two:
+    image: ursu/hangfire-demo:latest
+    build:
+      context: VHD
+      dockerfile: Dockerfile
+    ports:
+      - "6062:8080"
+    environment:
+      ServiceOptions__ServiceName: "Docker Two"
+      ServiceOptions__HangfireConnection: "Host=postgres; Database=postgres; Username=postgres; Password=postgres"
+      ServiceOptions__HangfireQueues: "two,default"
+
   postgres:
     image: postgres:15.7-alpine3.20
     ports:

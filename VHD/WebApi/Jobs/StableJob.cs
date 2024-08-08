@@ -1,3 +1,6 @@
+using Hangfire;
+using WebApi.Configurations;
+
 namespace WebApi.Jobs;
 
 public class StableJob : BaseJob
@@ -6,6 +9,7 @@ public class StableJob : BaseJob
     {
     }
 
+    [Queue(JobQueues.One)]
     protected override Task DoWork()
     {
         return Task.CompletedTask;

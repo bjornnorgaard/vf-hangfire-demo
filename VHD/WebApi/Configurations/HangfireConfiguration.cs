@@ -25,14 +25,17 @@ public static class ServiceCollectionExtension
 
         builder.Services.AddHangfireServer(o =>
         {
-            o.ServerName = opts.ServiceName + $"{Guid.NewGuid()}";
+            o.ServerName = $"{opts.ServiceName} {Guid.NewGuid()}";
             if (queues.Length > 0) o.Queues = queues;
         });
     }
 
     public static void UseHangfire(this WebApplication app)
     {
-        app.UseHangfireDashboard();
+        app.UseHangfireDashboard(options: new DashboardOptions
+        {
+            Authorization = new [] { new AnonymousAuthorizationFilter() }
+        });
 
         RecurringJob.AddOrUpdate<Scheduler>("scheduler", x => x.Run(), Cron.Minutely);
     }
