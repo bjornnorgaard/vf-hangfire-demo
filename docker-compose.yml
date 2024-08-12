@@ -1,5 +1,5 @@
 services:
-  
+
   webapi_one:
     image: ursu/webapi-hangfire:latest
     build:
@@ -7,10 +7,10 @@ services:
       dockerfile: WebApi/Dockerfile
     ports:
       - "6061:8080"
+    env_file:
+      - .env
     environment:
-      ServiceOptions__ServiceName: "Docker One"
-      ServiceOptions__HangfireConnection: "Host=postgres; Database=postgres; Username=postgres; Password=postgres"
-      ServiceOptions__HangfireQueues: "one,default"
+      ServiceOptions__ServiceName: "One"
     depends_on:
       - postgres
 
@@ -21,13 +21,21 @@ services:
       dockerfile: WebApi/Dockerfile
     ports:
       - "6062:8080"
+    env_file:
+      - .env
     environment:
-      ServiceOptions__ServiceName: "Docker Two"
-      ServiceOptions__HangfireConnection: "Host=postgres; Database=postgres; Username=postgres; Password=postgres"
-      ServiceOptions__HangfireQueues: "two,default"
+      ServiceOptions__ServiceName: "Two"
     depends_on:
       - postgres
-  
+
+  aspire:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:8.0.0
+    environment:
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: true
+    ports:
+      - "18888:18888" # UI
+      - "4317:18889" # gRPC
+
   postgres:
     image: postgres:15.7-alpine3.20
     ports:
