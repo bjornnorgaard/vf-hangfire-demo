@@ -42,6 +42,6 @@ public static class ServiceCollectionExtension
             { Authorization = new[] { new AnonymousAuthorizationFilter() } });
 
         RecurringJob.AddOrUpdate<TurbineScheduler>("turbine-scheduler",
-            x => x.Run(default), "*/5 * * * *");
+            x => x.Run(default), "* * * * *");
     }
 }

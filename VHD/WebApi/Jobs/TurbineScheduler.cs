@@ -20,7 +20,7 @@ public class TurbineScheduler(WindContext context)
                 continue;
             }
 
-            RecurringJob.AddOrUpdate<TurbineJob>(turbine.Unit, job => job.Run(turbine.Id, ct), "*/15 * * * *");
+            RecurringJob.AddOrUpdate<TurbineJob>(turbine.Unit, job => job.Run(turbine.Id, ct), "* * * * *");
         }
     }
 }

@@ -30,10 +30,7 @@ public static class TelemetryConfiguration
             })
             .WithTracing(tracing => tracing
                 .AddAspNetCoreInstrumentation()
-                .AddHangfireInstrumentation(o =>
-                {
-                    o.DisplayNameFunc = job => $"JOB {job.Job.Type.Name}.{job.Job.Method.Name}";
-                })
+                .AddHangfireInstrumentation()
                 .AddEntityFrameworkCoreInstrumentation()
                 .AddOtlpExporter(o => o.Endpoint = otlpHost))
             .WithMetrics(metrics => metrics
