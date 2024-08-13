@@ -21,10 +21,8 @@ app.UseHangfire();
 app.Services.CreateScope().ServiceProvider.GetService<WindContext>()?.Database.Migrate();
 app.MapTurbineEndpoints();
 
-app.MapGet("/jobs", async (WindContext context, CancellationToken ct) =>
+app.MapGet("/jobs", (WindContext context, CancellationToken ct) =>
 {
-    var list = await context.Database.CanConnectAsync(ct);
-    
     var servers = JobStorage.Current
         .GetMonitoringApi().Servers()
         .Select(s => new
@@ -59,7 +57,7 @@ app.MapGet("/jobs", async (WindContext context, CancellationToken ct) =>
         Jobs = jobs,
     };
 
-    return Results.Ok(result);
+    return Task.FromResult(Results.Ok(result));
 });
 
 app.Run();
