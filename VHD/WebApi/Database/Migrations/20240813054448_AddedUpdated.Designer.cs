@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApi.Database;
@@ -11,9 +12,11 @@ using WebApi.Database;
 namespace WebApi.Database.Migrations
 {
     [DbContext(typeof(WindContext))]
-    partial class WindContextModelSnapshot : ModelSnapshot
+    [Migration("20240813054448_AddedUpdated")]
+    partial class AddedUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,7 +1,9 @@
+name: vhd
+
 services:
 
-  webapi_one:
-    image: ursu/webapi-hangfire:latest
+  one:
+    image: ursu/vhdapi:latest
     build:
       context: VHD
       dockerfile: WebApi/Dockerfile
@@ -14,8 +16,8 @@ services:
     depends_on:
       - postgres
 
-  webapi_two:
-    image: ursu/webapi-hangfire:latest
+  two:
+    image: ursu/vhdapi:latest
     build:
       context: VHD
       dockerfile: WebApi/Dockerfile

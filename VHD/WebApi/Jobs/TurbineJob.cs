@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Configurations;
 using WebApi.Database;
+using WebApi.Hangfire;
 using WebApi.Telemetry;
 
 namespace WebApi.Jobs;
@@ -27,9 +27,10 @@ public class TurbineJob(WindContext context, ILogger<TurbineJob> logger)
             return;
         }
 
-        var result = turbine.PowerKiloWatts * turbine.Efficiency * turbine.UptimeSeconds;
-        await Task.Delay(Random.Shared.Next(3_000), ct);
+        turbine.Result = turbine.PowerKiloWatts * turbine.Efficiency * turbine.UptimeSeconds;
+        turbine.UpdatedAt = DateTimeOffset.UtcNow;
+        await context.SaveChangesAsync(ct);
 
-        logger.LogInformation("Turbine {TurbineId} produced {Result}", turbine.Id, result);
+        logger.LogInformation("Turbine {TurbineId} produced {Result:F2} DKK", turbine.Id, turbine.Result);
     }
 }

@@ -15,5 +15,7 @@ internal class TurbineConfiguration : IEntityTypeConfiguration<Turbine>
         builder.Property(t => t.PowerKiloWatts).IsRequired();
         builder.Property(t => t.Efficiency).IsRequired();
         builder.Property(t => t.UptimeSeconds).IsRequired();
+        builder.Property(t => t.Result);
+        builder.Property(t => t.UpdatedAt);
     }
 }

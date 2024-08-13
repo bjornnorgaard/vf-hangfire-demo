@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.PostgreSql;
+using WebApi.Hangfire;
 using WebApi.Jobs;
 using WebApi.Options;
 

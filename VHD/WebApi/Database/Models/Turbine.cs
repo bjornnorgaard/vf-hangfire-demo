@@ -9,4 +9,6 @@ public class Turbine
     public int PowerKiloWatts { get; set; }
     public double Efficiency { get; set; }
     public int UptimeSeconds { get; set; }
+    public double Result { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 }

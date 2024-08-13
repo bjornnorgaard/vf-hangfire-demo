@@ -1,4 +1,4 @@
-namespace WebApi.Configurations;
+namespace WebApi.Hangfire;
 
 public static class QueueNames
 {

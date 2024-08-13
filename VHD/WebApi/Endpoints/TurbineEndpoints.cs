@@ -54,11 +54,34 @@ public static class TurbineEndpoints
             return Results.Ok(stats);
         });
 
-        group.MapDelete("/clear", async (WindContext context, CancellationToken ct) =>
+        group.MapDelete("clear",
+            async (WindContext context, CancellationToken ct) => { await context.Turbines.ExecuteDeleteAsync(ct); });
+
+        group.MapGet("status", async (WindContext context, CancellationToken ct) =>
         {
-            await context.Turbines.ExecuteDeleteAsync(ct);
+            var oldest = await context.Turbines
+                .OrderBy(t => t.UpdatedAt)
+                .Take(5)
+                .ToListAsync(ct);
+
+            var noResults = await context.Turbines
+                .Where(t => t.Result == 0)
+                .Take(5)
+                .ToListAsync(ct);
+
+            var disabled = await context.Turbines
+                .Where(t => t.Disabled)
+                .Take(5)
+                .ToListAsync(ct);
+
+            return Results.Ok(new
+            {
+                Oldest = oldest,
+                NoResults = noResults,
+                Disabled = disabled,
+            });
         });
-        
+
         group.MapGet("seed", async (WindContext context, CancellationToken ct) =>
         {
             var any = await context.Turbines.AnyAsync(cancellationToken: ct);
@@ -68,16 +91,16 @@ public static class TurbineEndpoints
 
             foreach (var park in list)
             {
-                for (var n = 0; n < Random.Shared.Next(10, 1000); n++)
+                for (var n = 0; n < Random.Shared.Next(10, 100); n++)
                 {
                     var turbine = new Turbine
                     {
                         Unit = $"{park}{n:D3}",
                         Park = park,
                         Disabled = false,
-                        PowerKiloWatts = Random.Shared.Next(1000),
+                        PowerKiloWatts = Random.Shared.Next(1, 1000),
                         Efficiency = Random.Shared.NextDouble(),
-                        UptimeSeconds = Random.Shared.Next(1000000)
+                        UptimeSeconds = Random.Shared.Next(1, 1000000)
                     };
                     await context.Turbines.AddAsync(turbine, ct);
                 }

@@ -1,6 +1,6 @@
 using Hangfire.Dashboard;
 
-namespace WebApi.Configurations;
+namespace WebApi.Hangfire;
 
 public class AnonymousAuthorizationFilter : IDashboardAuthorizationFilter
 {
