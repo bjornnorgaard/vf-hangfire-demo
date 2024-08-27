@@ -27,8 +27,14 @@ public class TurbineJob(WindContext context, ILogger<TurbineJob> logger)
             return;
         }
 
+        if (Random.Shared.Next(100) < 10)
+        {
+            throw new Exception("This is a transient failure");
+        }
+
         turbine.Result = turbine.PowerKiloWatts * turbine.Efficiency * turbine.UptimeSeconds;
         turbine.UpdatedAt = DateTimeOffset.UtcNow;
+
         await context.SaveChangesAsync(ct);
 
         logger.LogInformation("Turbine {TurbineId} produced {Result:F2} DKK", turbine.Id, turbine.Result);

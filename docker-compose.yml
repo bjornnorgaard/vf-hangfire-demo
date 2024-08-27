@@ -13,6 +13,8 @@ services:
       - .env
     environment:
       ServiceOptions__ServiceName: "One"
+      ServiceOptions__HangfireQueues: "turbine"
+    restart: on-failure
     depends_on:
       - postgres
 
@@ -27,6 +29,8 @@ services:
       - .env
     environment:
       ServiceOptions__ServiceName: "Two"
+      ServiceOptions__HangfireQueues: "turbine"
+    restart: on-failure
     depends_on:
       - postgres
 
@@ -48,25 +52,3 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
-
-  master:
-    image: cribl/cribl:latest
-    environment:
-      - CRIBL_DIST_MODE=master
-      - CRIBL_DIST_MASTER_URL=tcp://criblmaster@0.0.0.0:4200
-      - CRIBL_VOLUME_DIR=/opt/cribl/config-volume
-    ports:
-      - "19000:9000"
-    volumes:
-      - "./config/cribl/cribl-config:/opt/cribl/config-volume"
-
-  worker:
-    image: cribl/cribl:latest
-    depends_on: 
-      - master
-    environment:
-      - CRIBL_DIST_MODE=worker
-      - CRIBL_DIST_MASTER_URL=tcp://criblmaster@master:4200
-    ports:
-      - "9000:9000"
-      - "4317:4317"
