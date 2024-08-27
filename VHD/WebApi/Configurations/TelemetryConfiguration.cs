@@ -27,10 +27,11 @@ public static class TelemetryConfiguration
             {
                 loggerOptions.IncludeScopes = true;
                 loggerOptions.IncludeFormattedMessage = true;
+                loggerOptions.ParseStateValues = true;
             })
             .WithTracing(tracing => tracing
                 .AddAspNetCoreInstrumentation()
-                .AddHangfireInstrumentation()
+                .AddHangfireInstrumentation(o => o.RecordException = true)
                 .AddEntityFrameworkCoreInstrumentation()
                 .AddOtlpExporter(o => o.Endpoint = otlpHost))
             .WithMetrics(metrics => metrics
