@@ -4,12 +4,17 @@ using WebApi.Database;
 using WebApi.Hangfire;
 using WebApi.Telemetry;
 
+// ReSharper disable ClassNeverInstantiated.Global
+
 namespace WebApi.Jobs;
 
 [Queue(QueueNames.Turbine)]
-public class TurbineJob(WindContext context, ILogger<TurbineJob> logger)
+public class TurbineHandler(WindContext context, ILogger<TurbineHandler> logger)
 {
-    public async Task Run(Guid turbineId, CancellationToken ct)
+    [JobDisplayName("TurbineHandler({1})"),
+     DisableConcurrentExecution("{0}", 0),
+     AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+    public async Task Run(Guid turbineId, string unit, CancellationToken ct)
     {
         CurrentActivity.AddTurbineId(turbineId);
 
@@ -27,9 +32,15 @@ public class TurbineJob(WindContext context, ILogger<TurbineJob> logger)
             return;
         }
 
-        if (Random.Shared.Next(100) < 10)
+        for (var i = 0; i < turbine.UptimeSeconds; i++)
         {
-            throw new Exception("This is a transient failure");
+            await Task.Delay(1000, ct);
+            logger.LogInformation("Working on {Unit} for {Seconds} seconds", unit, i);
+
+            if (Random.Shared.Next(1000) == 0)
+            {
+                throw new Exception("This is a transient failure");
+            }
         }
 
         turbine.Result = turbine.PowerKiloWatts * turbine.Efficiency * turbine.UptimeSeconds;

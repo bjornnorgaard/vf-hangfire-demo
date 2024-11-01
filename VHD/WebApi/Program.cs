@@ -20,6 +20,7 @@ app.UseSwaggerUI();
 app.UseHangfire();
 app.Services.CreateScope().ServiceProvider.GetService<WindContext>()?.Database.Migrate();
 app.MapTurbineEndpoints();
+app.MapJobEndpoints();
 
 app.MapGet("/jobs", (WindContext context, CancellationToken ct) =>
 {

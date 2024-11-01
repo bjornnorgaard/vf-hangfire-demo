@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Database;
 using WebApi.Hangfire;
 
+// ReSharper disable ClassNeverInstantiated.Global
+
 namespace WebApi.Jobs;
 
 [Queue(QueueNames.Scheduler), AutomaticRetry(Attempts = 3), DisableConcurrentExecution(60)]
-public class TurbineScheduler(WindContext context)
+public class TurbineController(WindContext context, ILogger<TurbineController> logger)
 {
     public async Task Run(CancellationToken ct)
     {
@@ -20,7 +22,7 @@ public class TurbineScheduler(WindContext context)
                 continue;
             }
 
-            RecurringJob.AddOrUpdate<TurbineJob>(turbine.Unit, job => job.Run(turbine.Id, ct), "* * * * *");
+            RecurringJob.AddOrUpdate<TurbineHandler>(turbine.Unit, h => h.Run(turbine.Id, turbine.Unit, ct), "* * * * *");
         }
     }
 }

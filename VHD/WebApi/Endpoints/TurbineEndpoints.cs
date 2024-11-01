@@ -87,20 +87,20 @@ public static class TurbineEndpoints
             var any = await context.Turbines.AnyAsync(cancellationToken: ct);
             if (any) return Results.BadRequest("Already seeded");
 
-            var list = new List<string> { "ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VWX" };
+            var list = new List<string> { "A", "B" };
 
             foreach (var park in list)
             {
-                for (var n = 0; n < Random.Shared.Next(10, 100); n++)
+                for (var n = 1; n <= 2; n++)
                 {
                     var turbine = new Turbine
                     {
-                        Unit = $"{park}{n:D3}",
+                        Unit = $"{park}{n}",
                         Park = park,
                         Disabled = false,
                         PowerKiloWatts = Random.Shared.Next(1, 1000),
                         Efficiency = Random.Shared.NextDouble(),
-                        UptimeSeconds = Random.Shared.Next(1, 1000000)
+                        UptimeSeconds = 10,
                     };
                     await context.Turbines.AddAsync(turbine, ct);
                 }

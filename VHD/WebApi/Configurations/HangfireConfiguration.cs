@@ -29,7 +29,7 @@ public static class ServiceCollectionExtension
         {
             builder.Services.AddHangfireServer(o =>
             {
-                o.ServerName = $"{opts.ServiceName} {Guid.NewGuid()}";
+                o.ServerName = $"{opts.ServiceName}";
                 o.WorkerCount = Environment.ProcessorCount;
                 o.Queues = queues;
             });
@@ -41,7 +41,7 @@ public static class ServiceCollectionExtension
         app.UseHangfireDashboard(options: new DashboardOptions
             { Authorization = new[] { new AnonymousAuthorizationFilter() } });
 
-        RecurringJob.AddOrUpdate<TurbineScheduler>("turbine-scheduler",
+        RecurringJob.AddOrUpdate<TurbineController>("turbine-scheduler",
             x => x.Run(default), "* * * * *");
     }
 }
