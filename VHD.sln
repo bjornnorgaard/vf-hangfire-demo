@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{B38755EF-FFE1-4457-B407-5BC1F71BC98C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VHD.Api", "VHD.Api\VHD.Api.csproj", "{B38755EF-FFE1-4457-B407-5BC1F71BC98C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B01F03EF-0482-4305-BD69-0C7196F434A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VHD.Api.Tests", "VHD.Api.Tests\VHD.Api.Tests.csproj", "{B01F03EF-0482-4305-BD69-0C7196F434A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
